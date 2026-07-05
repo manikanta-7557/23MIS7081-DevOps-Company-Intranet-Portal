@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Intranet Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
+        header { background-color: #0078d4; color: white; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: 30px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { color: #0078d4; border-bottom: 2px solid #f4f6f9; padding-bottom: 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #f9fbfd; margin: 10px 0; padding: 15px; border-left: 5px solid #0078d4; border-radius: 4px; }
+        .meta { font-size: 0.85em; color: #666; margin-top: 5px; }
+        .badge { background: #e1dfdd; padding: 2px 8px; border-radius: 12px; font-size: 0.9em; font-weight: bold; }
+        .High { background: #fde7e9; color: #a80000; }
+        form { display: flex; flex-direction: column; gap: 10px; background: #fafafa; padding: 15px; border-radius: 6px; }
+        input, textarea, select, button { padding: 10px; font-size: 100%; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #0078d4; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #005a9e; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GlobalCorp Intranet Portal</h1>
+    </header>
+    <div class="container">
+        <h2>Latest Announcements</h2>
+        <ul>
+            <li th:each="item : ${announcements}">
+                <strong th:text="${item.title}">Title</strong> - <span th:text="${item.content}">Content</span>
+                <div class="meta">
+                    Publisher: <span th:text="${item.department}">Dept</span> | 
+                    Priority: <span th:class="'badge ' + ${item.priority}" th:text="${item.priority}">Priority</span>
+                </div>
+            </li>
+        </ul>
+
+        <h2>Publish New Update</h2>
+        <form th:action="@{/announcement/add}" th:object="${newAnnouncement}" method="post">
+            <input type="text" th:field="*{title}" placeholder="Announcement Title" required />
+            <textarea th:field="*{content}" placeholder="Notice details..." rows="3" required></textarea>
+            <input type="text" th:field="*{department}" placeholder="Department (e.g., HR, IT)" required />
+            <select th:field="*{priority}">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <button type="submit">Broadcast to Intranet</button>
+        </form>
+    </div>
+</body>
+</html>
