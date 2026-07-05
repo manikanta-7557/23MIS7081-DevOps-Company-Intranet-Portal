@@ -25,7 +25,7 @@ pipeline {
         stage('Kubernetes Deployment') {
             steps {
                 echo 'Applying manifests to the local cluster...'
-                bat 'kubectl apply -f k8s/'
+                bat 'kubectl --kubeconfig="C:\\ProgramData\\Jenkins\\.kube\\config" apply -f k8s/'
             }
         }
     }
