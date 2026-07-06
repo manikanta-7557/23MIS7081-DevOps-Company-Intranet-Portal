@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: monitoring-system
+  name: monitoring-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: monitoring
+      app: monitoring-stack
   template:
     metadata:
       labels:
-        app: monitoring
+        app: monitoring-stack
     spec:
       containers:
       - name: graphite
@@ -29,12 +29,14 @@ metadata:
   name: graphite-service
 spec:
   selector:
-    app: monitoring
+    app: monitoring-stack
   ports:
-    - name: graphite-ui
-      port: 80
-    - name: graphite-carbon
+    - name: carbon
       port: 2003
+      targetPort: 2003
+    - name: ui
+      port: 80
+      targetPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -43,7 +45,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: monitoring
+    app: monitoring-stack
   ports:
     - port: 3000
       targetPort: 3000
